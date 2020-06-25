@@ -1,0 +1,87 @@
+package BuilderExample;
+
+class Pizza {
+    public void makeDough() {
+        print("Make dough");
+    }
+    public void сutIngredients() {
+        print("Сut ingredients");
+    }
+    public void addCheese(Cheese cheese) {
+        print("Add cheese: " + cheese.getCheeseType());
+    }
+    private void print(String msg){
+        System.out.println(msg);
+    }
+}
+interface Cheese {
+    String getCheeseType();
+}
+class Mozarella implements Cheese {
+    public String getCheeseType() {
+        return "mozarella";
+    }
+}
+class Gouda implements Cheese {
+    public String getCheeseType() {
+        return "gouda";
+    }
+}
+abstract class Cooker {
+    protected Pizza pizza;
+    public abstract Pizza makePizza();
+}
+class OneCheeseOption extends Cooker {
+    public OneCheeseOption(){
+        pizza = new Pizza();
+    }
+    public Pizza makePizza() {
+        pizza.makeDough();
+        pizza.сutIngredients();
+        Cheese cheese = new Mozarella();
+        pizza.addCheese(cheese);
+        return pizza;
+    }
+}
+class TwoCheesesOption extends Cooker {
+    public TwoCheesesOption(){
+        pizza = new Pizza();
+    }
+    public Pizza makePizza() {
+    	pizza.makeDough();
+    	pizza.сutIngredients();
+        Cheese cheese = new Gouda();
+        pizza.addCheese(cheese);
+        cheese = new Mozarella();
+        pizza.addCheese(cheese);
+        return pizza;
+    }
+}
+class CookingMethod {
+    private Cooker cooker;
+    public CookingMethod (int i){
+    	switch (i) {
+    	case 1: 
+		{
+			cooker = new OneCheeseOption();
+			break;
+		}
+    	case 2: 
+		{
+			cooker = new TwoCheesesOption();
+			break;
+		}   
+		default:	System.out.println ("No such option in our restaurant");
+    	}
+    }
+    public Pizza makePizza(){
+        return cooker.makePizza();
+    }
+}
+
+public class MainClass {
+    public static void main(String[] args) {
+    	CookingMethod m = new CookingMethod(2);
+        m.makePizza();
+    }
+}
